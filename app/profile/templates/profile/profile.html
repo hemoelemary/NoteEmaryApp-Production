@@ -1,0 +1,689 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile - NoteEmaryApp</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <style>
+        :root {
+            --primary-color: #6366f1;
+            --primary-hover: #4f46e5;
+            --sidebar-width: 260px;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f8f9fa;
+        }
+
+        /* Navbar */
+        .navbar {
+            background: white;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            padding: 0.8rem 1.5rem;
+        }
+
+        .navbar-brand {
+            font-weight: 700;
+            color: var(--primary-color);
+            font-size: 1.5rem;
+        }
+
+        .navbar-brand i {
+            margin-right: 0.5rem;
+        }
+
+        .nav-link {
+            color: #555;
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .nav-link:hover, .nav-link.active {
+            color: var(--primary-color);
+            background: rgba(99, 102, 241, 0.1);
+        }
+
+        .nav-link i {
+            margin-right: 0.5rem;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--primary-color);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .user-avatar:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(99, 102, 241, 0.4);
+        }
+
+        /* Main Content */
+        .main-content {
+            padding: 2rem;
+            margin-top: 70px;
+        }
+
+        /* Profile Header */
+        .profile-header {
+            background: white;
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            margin-bottom: 2rem;
+        }
+
+        .profile-avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary-color) 0%, #8b5cf6 100%);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            position: relative;
+        }
+
+        .profile-avatar .edit-avatar {
+            position: absolute;
+            bottom: 5px;
+            right: 5px;
+            width: 35px;
+            height: 35px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary-color);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            cursor: pointer;
+            font-size: 0.9rem;
+        }
+
+        .profile-name {
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 0.3rem;
+        }
+
+        .profile-email {
+            color: #888;
+            margin-bottom: 1rem;
+        }
+
+        .profile-stats {
+            display: flex;
+            gap: 2rem;
+            justify-content: center;
+        }
+
+        .profile-stat {
+            text-align: center;
+        }
+
+        .profile-stat-number {
+            font-weight: 700;
+            font-size: 1.5rem;
+            color: var(--primary-color);
+        }
+
+        .profile-stat-label {
+            color: #888;
+            font-size: 0.85rem;
+        }
+
+        /* Card Styles */
+        .card {
+            background: white;
+            border-radius: 16px;
+            border: none;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .card-header {
+            background: transparent;
+            border-bottom: 1px solid #eee;
+            padding: 1.5rem;
+        }
+
+        .card-header h5 {
+            font-weight: 700;
+            color: #333;
+            margin: 0;
+        }
+
+        .card-body {
+            padding: 1.5rem;
+        }
+
+        /* Form Styles */
+        .form-floating {
+            margin-bottom: 1rem;
+        }
+
+        .form-floating input,
+        .form-floating textarea,
+        .form-floating select {
+            border-radius: 12px;
+            border: 2px solid #e0e0e0;
+            transition: all 0.3s ease;
+        }
+
+        .form-floating input:focus,
+        .form-floating textarea:focus,
+        .form-floating select:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 0.2rem rgba(99, 102, 241, 0.25);
+        }
+
+        .form-floating label {
+            color: #666;
+        }
+
+        .btn-primary {
+            background: var(--primary-color);
+            border: none;
+            border-radius: 12px;
+            padding: 0.8rem 1.5rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(99, 102, 241, 0.4);
+        }
+
+        .btn-outline-secondary {
+            border-radius: 12px;
+            padding: 0.8rem 1.5rem;
+            font-weight: 600;
+        }
+
+        /* Note List */
+        .note-item {
+            display: flex;
+            align-items: center;
+            padding: 1rem;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+            margin-bottom: 0.5rem;
+        }
+
+        .note-item:hover {
+            background: #f8f9fa;
+        }
+
+        .note-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            background: rgba(99, 102, 241, 0.1);
+            color: var(--primary-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+            margin-right: 1rem;
+        }
+
+        .note-content {
+            flex: 1;
+        }
+
+        .note-title {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 0.2rem;
+        }
+
+        .note-meta {
+            color: #888;
+            font-size: 0.85rem;
+        }
+
+        .note-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .note-actions button {
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            border: none;
+            background: transparent;
+            color: #666;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .note-actions button:hover {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .note-actions button.delete:hover {
+            background: #ef4444;
+        }
+
+        /* Subject Tags */
+        .subject-tag {
+            display: inline-block;
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-right: 0.5rem;
+        }
+
+        .subject-tag.math {
+            background: rgba(99, 102, 241, 0.1);
+            color: var(--primary-color);
+        }
+
+        .subject-tag.physics {
+            background: rgba(16, 185, 129, 0.1);
+            color: #10b981;
+        }
+
+        .subject-tag.chemistry {
+            background: rgba(245, 158, 11, 0.1);
+            color: #f59e0b;
+        }
+
+        .subject-tag.biology {
+            background: rgba(236, 72, 153, 0.1);
+            color: #ec4899;
+        }
+
+        /* Toast Notification */
+        .toast-container {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1050;
+        }
+
+        .toast {
+            border-radius: 12px;
+            border: none;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .toast-header {
+            border-radius: 12px 12px 0 0;
+            background: var(--primary-color);
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg fixed-top">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/user/dashboard">
+                <i class="bi bi-journal-bookmark-fill"></i>NoteEmaryApp
+            </a>
+            
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto ms-4">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/user/dashboard">
+                            <i class="bi bi-house"></i>Home
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/user/profile">
+                            <i class="bi bi-person-circle"></i>Profile
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/auth/login">
+                            <i class="bi bi-person"></i>Login
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/auth/register">
+                            <i class="bi bi-person-fill-add"></i>Register
+                        </a>
+                    </li>
+                </ul>
+                
+                <div class="d-flex align-items-center gap-3">
+                    <div class="user-avatar">{{name[0]}}</div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <div class="container-fluid">
+            <div class="row">
+                <!-- Left Column - Profile Info -->
+                <div class="col-lg-4">
+                    <!-- Profile Card -->
+                    <div class="profile-header text-center">
+                        <div class="profile-avatar mx-auto">
+                            {{name[0]}}
+                        </div>
+                        <h4 class="profile-name">{{name}}</h4>
+                        <p class="profile-email">{{email}}</p>
+                        <div class="profile-stats">
+                            <div class="profile-stat">
+                                <div class="profile-stat-number">{{count}}</div>
+                                <div class="profile-stat-label">Notes</div>
+                            </div>
+                            <div class="profile-stat">
+                                <div class="profile-stat-number">{{countsub}}</div>
+                                <div class="profile-stat-label">Subjects</div>
+                            </div>
+                            <div class="profile-stat">
+                                <div class="profile-stat-number">{{todaynot}}</div>
+                                <div class="profile-stat-label">today's notes</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Settings Card -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h5><i class="bi bi-gear me-2"></i>Settings</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="list-group list-group-flush">
+                                <a href="/user/dashboard" class="list-group-item list-group-item-action d-flex align-items-center py-3">
+                                    <i class="bi bi-person-gear me-3 text-primary"></i>
+                                    <span>Home</span>
+                                    <i class="bi bi-chevron-right ms-auto text-muted"></i>
+                                </a>
+                                <a href="/auth/register" class="list-group-item list-group-item-action d-flex align-items-center py-3">
+                                    <i class="bi bi-shield-lock me-3 text-success"></i>
+                                    <span>New Account</span>
+                                    <i class="bi bi-chevron-right ms-auto text-muted"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Column - Add Note & My Notes -->
+                <div class="col-lg-8">
+                    <!-- Add New Note Card -->
+                    <div class="card mb-4" id="addNote">
+                        <div class="card-header">
+                            <h5><i class="bi bi-plus-circle me-2 text-primary"></i>Add New Note</h5>
+                        </div>
+                        <div class="card-body">
+                            <form id="addNoteForm" method="POST">
+                                {{form.hidden_tag()}}
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-floating">
+                                            {{form.subject(class="form-control" ,id="subjectName" ,placeholder="Subject Name" ,required=True)}}
+                                            <label for="subjectName"><i class="bi bi-book me-2"></i>Subject Name</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-floating">
+                                            {{form.chapter(class="form-control" ,id="chapterName", placeholder="Chapter Name", required=True)}}
+                                            <label for="chapterName"><i class="bi bi-folder me-2"></i>Chapter Name</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-floating">
+                                    {{form.content(class="form-control" ,id="noteContent" ,placeholder="Write your note here..." ,style="height: 150px;" ,required=True)}}
+                                    <label for="noteContent"><i class="bi bi-pencil me-2"></i>Note Content</label>
+                                </div>
+                                <div class="d-flex gap-2">
+                                    {{form.submit(class="btn btn-primary")}}
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+                    <!-- My Notes Card -->
+                    <div class="dropdown">
+                    <button class="btn btn-outline-secondary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                        <i class="bi bi-funnel me-1"></i><span id="currentFilter">All Subjects</span>
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-end">
+                        <li><a class="dropdown-item filter-option" href="#" data-filter="all">All Subjects</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        {% for x in subjects %}                            
+                        <li><a class="dropdown-item filter-option" href="#" data-filter="{{ x.lower() }}">{{ x }}</a></li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                        <div class="card-body">
+    <div id="notesList">
+        {% for i in notes %}
+        <div class="note-item" data-subject="{{ i.subject.lower() }}">
+            <div class="note-icon">
+                <i class="bi bi-journal-text"></i>
+            </div>
+            <div class="note-content">
+                <div class="note-title">{{i.subject}} {{i.chapter}}</div>
+                <div class="note-meta">
+                    <span class="subject-tag math">{{i.subject}}</span>
+                    <i class="bi bi-folder me-1"></i>{{i.chapter}}
+                </div>
+            </div>
+            <div class="note-actions">
+                <button 
+                    title="View" 
+                    data-bs-toggle="modal" 
+                    data-bs-target="#viewNoteModal"
+                    data-subject="{{ i.subject }}"
+                    data-chapter="{{ i.chapter }}"
+                    data-content="{{ i.content }}"
+                    onclick="viewNote(this.dataset.subject+' '+this.dataset.chapter,this.dataset.subject, this.dataset.chapter, this.dataset.content)">
+                    <i class="bi bi-eye"></i>
+                </button>
+
+                <a class="delete" title="Delete" href="/user/profile/delete/{{i.id}}">
+                    <i class="bi bi-trash"></i>
+                </a>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- View Note Modal -->
+    <div class="modal fade" id="viewNoteModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalNoteTitle">Note Title</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <span id="modalSubjectTag" class="subject-tag math">Subject</span>
+                        <span class="text-muted"><i class="bi bi-folder me-1"></i><span id="modalChapter">Chapter</span></span>
+                    </div>
+                    <p id="modalNoteContent" class="lead">Note content goes here...</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary"><i class="bi bi-pencil me-2"></i>Edit</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div class="toast-container">
+        <div id="successToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="toast-header">
+                <i class="bi bi-check-circle me-2"></i>
+                <strong class="me-auto">Success</strong>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="toast"></button>
+            </div>
+            <div class="toast-body">
+                Note added successfully!
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+       
+
+        // Delete Note
+        function deleteNote(btn) {
+            if (confirm('Are you sure you want to delete this note?')) {
+                const noteItem = btn.closest('.note-item');
+                noteItem.style.animation = 'slideDown 0.3s ease-out';
+                setTimeout(() => noteItem.remove(), 300);
+            }
+        }
+
+        // View Note
+        function viewNote(title, subject, chapter, content) {
+            document.getElementById('modalNoteTitle').textContent = title;
+            document.getElementById('modalSubjectTag').textContent = subject;
+            document.getElementById('modalChapter').textContent = chapter;
+            document.getElementById('modalNoteContent').textContent = content;
+            
+            // Update tag class
+            const tag = document.getElementById('modalSubjectTag');
+            tag.className = 'subject-tag';
+            const subjectLower = subject.toLowerCase();
+            if (subjectLower.includes('physics')) tag.classList.add('physics');
+            else if (subjectLower.includes('chem')) tag.classList.add('chemistry');
+            else if (subjectLower.includes('bio')) tag.classList.add('biology');
+            else tag.classList.add('math');
+        }
+
+        // Add slideDown animation
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes slideDown {
+                from { opacity: 1; transform: translateY(0); }
+                to { opacity: 0; transform: translateY(-20px); }
+            }
+        `;
+        document.head.appendChild(style);
+        // Subject Filter Functionality
+document.addEventListener('DOMContentLoaded', function() {
+    const filterOptions = document.querySelectorAll('.filter-option');
+    const notesList = document.getElementById('notesList');
+    const currentFilterSpan = document.getElementById('currentFilter');
+    
+    filterOptions.forEach(option => {
+        option.addEventListener('click', function(e) {
+            e.preventDefault();
+            const filterValue = this.getAttribute('data-filter').toLowerCase();
+            const filterText = this.textContent;
+            
+            // Update dropdown button text
+            currentFilterSpan.textContent = filterText;
+            
+            // Get all note items
+            const noteItems = notesList.querySelectorAll('.note-item');
+            
+            noteItems.forEach(item => {
+                const subjectTag = item.querySelector('.subject-tag');
+                const subjectText = subjectTag.textContent.toLowerCase();
+                
+                if (filterValue === 'all' || subjectText.includes(filterValue)) {
+                    item.style.display = 'flex';
+                    // Add fade in animation
+                    item.style.animation = 'fadeIn 0.3s ease-out';
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+            
+            // Show toast notification
+            showToast(`Filtered by: ${filterText}`, 'info');
+        });
+    });
+});
+
+// Toast notification function
+function showToast(message, type = 'success') {
+    // Remove existing toasts
+    const existingToast = document.querySelector('.toast-notification');
+    if (existingToast) existingToast.remove();
+    
+    // Create toast element
+    const toast = document.createElement('div');
+    toast.className = 'toast-notification';
+    toast.style.cssText = `
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        background: ${type === 'success' ? 'var(--primary-color)' : '#6c757d'};
+        color: white;
+        padding: 1rem 1.5rem;
+        border-radius: 12px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        z-index: 1050;
+        animation: slideInRight 0.3s ease-out;
+        font-weight: 500;
+    `;
+    toast.innerHTML = `<i class="bi bi-check-circle me-2"></i>${message}`;
+    
+    document.body.appendChild(toast);
+    
+    // Remove after 3 seconds
+    setTimeout(() => {
+        toast.style.animation = 'slideOutRight 0.3s ease-out';
+        setTimeout(() => toast.remove(), 300);
+    }, 3000);
+}
+
+// Add animations
+const filterStyles = document.createElement('style');
+filterStyles.textContent = `
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(-10px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes slideInRight {
+        from { opacity: 0; transform: translateX(100px); }
+        to { opacity: 1; transform: translateX(0); }
+    }
+    @keyframes slideOutRight {
+        from { opacity: 1; transform: translateX(0); }
+        to { opacity: 0; transform: translateX(100px); }
+    }
+`;
+document.head.appendChild(filterStyles);
+    </script>
+</body>
+</html>

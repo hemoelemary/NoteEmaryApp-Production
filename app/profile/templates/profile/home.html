@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home - NoteEmaryApp</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <style>
+        :root {
+            --primary-color: #6366f1;
+            --primary-hover: #4f46e5;
+            --sidebar-width: 260px;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f8f9fa;
+        }
+
+        /* Navbar */
+        .navbar {
+            background: white;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            padding: 0.8rem 1.5rem;
+        }
+
+        .navbar-brand {
+            font-weight: 700;
+            color: var(--primary-color);
+            font-size: 1.5rem;
+        }
+
+        .navbar-brand i {
+            margin-right: 0.5rem;
+        }
+
+        .nav-link {
+            color: #555;
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .nav-link:hover, .nav-link.active {
+            color: var(--primary-color);
+            background: rgba(99, 102, 241, 0.1);
+        }
+
+        .nav-link i {
+            margin-right: 0.5rem;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--primary-color);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .user-avatar:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(99, 102, 241, 0.4);
+        }
+
+        /* Main Content */
+        .main-content {
+            padding: 2rem;
+            margin-top: 70px;
+        }
+
+        /* Stats Cards */
+        .stats-card {
+            background: white;
+            border-radius: 16px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+            border: none;
+        }
+
+        .stats-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .stats-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+        }
+
+        .stats-icon.purple {
+            background: rgba(99, 102, 241, 0.1);
+            color: var(--primary-color);
+        }
+
+        .stats-icon.green {
+            background: rgba(16, 185, 129, 0.1);
+            color: #10b981;
+        }
+
+        .stats-icon.orange {
+            background: rgba(245, 158, 11, 0.1);
+            color: #f59e0b;
+        }
+
+        .stats-icon.blue {
+            background: rgba(59, 130, 246, 0.1);
+            color: #3b82f6;
+        }
+
+        .stats-number {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 0.3rem;
+        }
+
+        .stats-label {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        /* Section Header */
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .section-title {
+            font-weight: 700;
+            color: #333;
+            margin: 0;
+        }
+
+        .btn-add {
+            background: var(--primary-color);
+            border: none;
+            border-radius: 10px;
+            padding: 0.6rem 1.2rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .btn-add:hover {
+            background: var(--primary-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(99, 102, 241, 0.4);
+        }
+
+        /* Note Cards */
+        .note-card {
+            background: white;
+            border-radius: 16px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+            border: none;
+            height: 100%;
+        }
+
+        .note-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+        }
+
+        .note-subject {
+            display: inline-block;
+            background: rgba(99, 102, 241, 0.1);
+            color: var(--primary-color);
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-bottom: 0.8rem;
+        }
+
+        .note-chapter {
+            color: #888;
+            font-size: 0.85rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .note-title {
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 0.8rem;
+            font-size: 1.1rem;
+        }
+
+        .note-preview {
+            color: #666;
+            font-size: 0.9rem;
+            line-height: 1.6;
+            margin-bottom: 1rem;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .note-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 1rem;
+            border-top: 1px solid #eee;
+        }
+
+        .note-date {
+            color: #888;
+            font-size: 0.8rem;
+        }
+
+        .note-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .note-actions button {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            border: none;
+            background: #f5f5f5;
+            color: #666;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .note-actions button:hover {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        /* Recent Activity */
+        .activity-card {
+            background: white;
+            border-radius: 16px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .activity-item {
+            display: flex;
+            align-items: center;
+            padding: 1rem 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .activity-item:last-child {
+            border-bottom: none;
+        }
+
+        .activity-icon {
+            width: 45px;
+            height: 45px;
+            border-radius: 10px;
+            background: rgba(99, 102, 241, 0.1);
+            color: var(--primary-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 1rem;
+        }
+
+        .activity-content {
+            flex: 1;
+        }
+
+        .activity-text {
+            color: #333;
+            font-weight: 500;
+            margin-bottom: 0.2rem;
+        }
+
+        .activity-time {
+            color: #888;
+            font-size: 0.8rem;
+        }
+
+        /* Search Bar */
+        .search-bar {
+            position: relative;
+            max-width: 400px;
+        }
+
+        .search-bar input {
+            border-radius: 12px;
+            border: 2px solid #e0e0e0;
+            padding-left: 2.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .search-bar input:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 0.2rem rgba(99, 102, 241, 0.25);
+        }
+
+        .search-bar i {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #888;
+        }
+
+        /* Welcome Banner */
+        .welcome-banner {
+            background: linear-gradient(135deg, var(--primary-color) 0%, #8b5cf6 100%);
+            border-radius: 20px;
+            padding: 2rem;
+            color: white;
+            margin-bottom: 2rem;
+        }
+
+        .welcome-banner h2 {
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .welcome-banner p {
+            opacity: 0.9;
+            margin-bottom: 0;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg fixed-top">
+        <div class="container-fluid">
+            <a class="navbar-brand">
+                <i class="bi bi-journal-bookmark-fill"></i>NoteEmaryApp
+            </a>
+            
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            
+            <div class="collapse navbar-collapse" id="navbarNav">
+                 <ul class="navbar-nav me-auto ms-4">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/user/dashboard">
+                            <i class="bi bi-house"></i>Home
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/user/profile">
+                            <i class="bi bi-person-circle"></i>Profile
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/auth/login">
+                            <i class="bi bi-person"></i>Login
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/auth/register">
+                            <i class="bi bi-person-fill-add"></i>Register
+                        </a>
+                    </li>
+                </ul>
+                
+                <div class="d-flex align-items-center gap-3">
+                    <div class="user-avatar" onclick="window.location.href='/user/profile'">{{name[0]}}</div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <div class="container-fluid">
+            <!-- Welcome Banner -->
+            <div class="welcome-banner">
+                <h2>Welcome back, {{name}}! 👋</h2>
+                <p>Thank You For Using My App -Mohamed Elemary</p>
+            </div>
+
+            <!-- Stats Row -->
+            <div class="row g-4 mb-4">
+                <div class="col-md-3 col-sm-6">
+                    <div class="stats-card">
+                        <div class="stats-icon purple">
+                            <i class="bi bi-journal-text"></i>
+                        </div>
+                        <div class="stats-number">{{count}}</div>
+                        <div class="stats-label">Total Notes</div>
+                    </div>
+                </div>
+                <div class="col-md-3 col-sm-6">
+                    <div class="stats-card">
+                        <div class="stats-icon green">
+                            <i class="bi bi-book"></i>
+                        </div>
+                        <div class="stats-number">{{countsub}}</div>
+                        <div class="stats-label">Subjects</div>
+                    </div>
+                </div>
+                <div class="col-md-3 col-sm-6">
+                    <div class="stats-card">
+                        <div class="stats-icon orange">
+                            <i class="bi bi-calendar-check"></i>
+                        </div>
+                        <div class="stats-number">{{todaynot}}</div>
+                        <div class="stats-label">Today</div>
+                    </div>
+                </div>
+                <div class="col-md-3 col-sm-6">
+                    <div class="stats-card">
+                        <div class="stats-icon blue">
+                            <i class="bi bi-clock-fill"></i>
+                        </div>
+                        <div class="stats-number">Stay</div>
+                        <div class="stats-label">with me</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <!-- Recent Notes -->
+                <div class="col-lg-8">
+                    <div class="section-header">
+                        <h4 class="section-title">Recent Notes</h4>
+                        <a href="/user/profile" class="btn btn-primary btn-add">
+                            <i class="bi bi-plus-lg me-2"></i>Add Note
+                        </a>
+                    </div>
+
+                    <div class="row g-4">
+                        {% for i in usernotes %}
+                        <div class="col-md-6">
+                            <div class="note-card">
+                                <span class="note-subject">{{i.subject}}</span>
+                                <div class="note-chapter"><i class="bi bi-folder me-1"></i>{{i.chapter}}</div>
+                                <h5 class="note-title">{{i.subject}} {{i.chapter}}</h5>
+                                {% if i.content %}
+                                <p class="note-preview">{{i.content[0:10]}}....</p>
+                                {% else %}
+                                <p class="note-preview">See more...</p>
+                                {% endif %}
+
+                                <div class="note-footer">
+                                    <span class="note-date"><i class="bi bi-clock me-1"></i>{{time(i.time)}}</span>
+                                    <div class="note-actions">
+                                        <button title="Edit"><i class="bi bi-pencil"></i></button>
+                                        <button title="Delete"><i class="bi bi-trash"></i></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                
+
+                        
+                    </div>
+                </div>
+
+                <!-- Sidebar -->
+                <div class="col-lg-4">
+                    <!-- Recent Activity -->
+                    <div class="section-header">
+                        <h4 class="section-title">Recent Activity</h4>
+                    </div>
+                    {% for i in usernotes %}
+                    <div class="activity-card mb-4">
+                        <div class="activity-item">
+                            <div class="activity-icon">
+                                <i class="bi bi-plus-lg"></i>
+                            </div>
+                            <div class="activity-content">
+                                <div class="activity-text">Added new note in {{i.subject}}</div>
+                                <div class="activity-time">{{time(i.time)}}</div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+
+                    <!-- Quick Actions -->
+                    <div class="section-header">
+                        <h4 class="section-title">Quick Actions</h4>
+                    </div>
+                    <div class="activity-card">
+                        <a href="/user/profile" class="d-flex align-items-center p-3 text-decoration-none text-dark rounded-3 hover-bg">
+                            <div class="activity-icon me-3">
+                                <i class="bi bi-plus-lg"></i>
+                            </div>
+                            <div>
+                                <div class="fw-semibold">Add New Note</div>
+                                <small class="text-muted">Create a new study note</small>
+                            </div>
+                        </a>
+                        <a href="/user/profile" class="d-flex align-items-center p-3 text-decoration-none text-dark rounded-3 hover-bg">
+                            <div class="activity-icon me-3" style="background: rgba(16, 185, 129, 0.1); color: #10b981;">
+                                <i class="bi bi-person"></i>
+                            </div>
+                            <div>
+                                <div class="fw-semibold">View Profile</div>
+                                <small class="text-muted">Manage your account</small>
+                            </div>
+                        </a>
+    
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <style>
+        .hover-bg:hover {
+            background: #f8f9fa;
+        }
+    </style>
+</body>
+</html>

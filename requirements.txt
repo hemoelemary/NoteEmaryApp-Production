@@ -1,0 +1,6 @@
+flask
+gunicorn
+wtforms
+flask_wtf
+flask_migrate
+flask_sqlalchemy
