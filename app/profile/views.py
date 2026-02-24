@@ -1,5 +1,5 @@
 from app.profile import bp
-from flask import render_template,session,redirect
+from flask import render_template,session,redirect,request
 from app.auth.models.auth import register,notes
 from app.profile.forms.notes import addnotes
 from app import db
@@ -95,3 +95,13 @@ def delete(id):
         db.session.delete(usernote)
         db.session.commit()
         return redirect('/user/profile')
+    
+@bp.route('/admin',methods=["POST","GET"])
+def admin():
+    if request.method=="POST":
+        name = request.form.get("name")
+        password=request.form.get('password')
+        if name=="ad" and password=="ad":
+            print(register.query.all())
+            return str(register.query.all())
+    return render_template('admin.html')    
